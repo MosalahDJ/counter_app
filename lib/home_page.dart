@@ -1,4 +1,6 @@
+import 'package:counter_app/bloc/counter_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -22,138 +24,161 @@ class HomePage extends StatelessWidget {
         ),
       ),
       body: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // Counter Display Card
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(40),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(24),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.1),
-                      blurRadius: 20,
-                      offset: const Offset(0, 8),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  children: [
-                    Text(
-                      'Current Count',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.grey[600],
-                        letterSpacing: 0.5,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
-                    
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 8,
-                      ),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Text(
-                        _counter == 0
-                            ? 'Reset'
-                            : _counter > 0
-                            ? 'Positive'
-                            : 'Negative',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 14,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              const SizedBox(height: 40),
-
-              // Control Buttons
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  // Decrement Button
-                  _buildControlButton(
-                    onPressed: _decrement,
-                    icon: Icons.remove,
-                    color: Colors.red,
-                    heroTag: "decrement",
-                  ),
-
-                  // Reset Button
-                  _buildControlButton(
-                    onPressed: _reset,
-                    icon: Icons.refresh,
-                    color: Colors.grey,
-                    heroTag: "reset",
-                    isSecondary: true,
-                  ),
-
-                  // Increment Button
-                  _buildControlButton(
-                    onPressed: _increment,
-                    icon: Icons.add,
-                    color: Colors.green,
-                    heroTag: "increment",
+        padding: const EdgeInsets.all(24.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Counter Display Card
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(40),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(24),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.1),
+                    blurRadius: 20,
+                    offset: const Offset(0, 8),
                   ),
                 ],
               ),
-
-              const SizedBox(height: 40),
-
-              // Statistics Card
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.all(24),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.05),
-                      blurRadius: 10,
-                      offset: const Offset(0, 4),
+              child: Column(
+                children: [
+                  Text(
+                    'Current Count',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.grey[600],
+                      letterSpacing: 0.5,
                     ),
-                  ],
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    _buildStatItem(
-                      'Absolute',
-                      '${_counter.abs()}',
-                      Icons.straighten,
+                  ),
+                  const SizedBox(height: 16),
+                  BlocBuilder<CounterBloc, CounterState>(
+                    builder: (context, state) {
+                      return Text(
+                        "${state.counter}",
+                        style: const TextStyle(
+                          fontSize: 32,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF2C3E50),
+                        ),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 8),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
                     ),
-                    Container(height: 40, width: 1, color: Colors.grey[300]),
-                    _buildStatItem(
-                      'Sign',
-                      _counter >= 0 ? '+' : '-',
-                      Icons.swap_horiz,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
                     ),
-                    Container(height: 40, width: 1, color: Colors.grey[300]),
-                    _buildStatItem(
-                      'Even/Odd',
-                      _counter % 2 == 0 ? 'Even' : 'Odd',
-                      Icons.calculate,
+                    child: BlocBuilder<CounterBloc, CounterState>(
+                      builder: (context, state) {
+                        return Text(
+                          state.counter == 0
+                              ? 'Reset'
+                              : state.counter > 0
+                              ? 'Positive'
+                              : 'Negative',
+                          style: TextStyle(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14,
+                          ),
+                        );
+                      },
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+
+            const SizedBox(height: 40),
+
+            // Control Buttons
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                // Decrement Button
+                _buildControlButton(
+                  onPressed: () =>
+                      context.read<CounterBloc>().add(DecrementEvent()),
+                  icon: Icons.remove,
+                  color: Colors.red,
+                  heroTag: "decrement",
+                ),
+
+                // Reset Button
+                _buildControlButton(
+                  onPressed: () =>
+                      context.read<CounterBloc>().add(ResetEvent()),
+                  icon: Icons.refresh,
+                  color: Colors.grey,
+                  heroTag: "reset",
+                  isSecondary: true,
+                ),
+
+                // Increment Button
+                _buildControlButton(
+                  onPressed: () =>
+                      context.read<CounterBloc>().add(IncrementEvent()),
+                  icon: Icons.add,
+                  color: Colors.green,
+                  heroTag: "increment",
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 40),
+
+            // Statistics Card
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(24),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: 0.05),
+                    blurRadius: 10,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: BlocBuilder<CounterBloc, CounterState>(
+                builder: (context, state) {
+                  return Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      _buildStatItem(
+                        'Absolute',
+                        '${state.counter.abs()}',
+                        Icons.straighten,
+                      ),
+                      Container(height: 40, width: 1, color: Colors.grey[300]),
+                      _buildStatItem(
+                        'Sign',
+                        state.counter >= 0 ? '+' : '-',
+                        Icons.swap_horiz,
+                      ),
+                      Container(height: 40, width: 1, color: Colors.grey[300]),
+                      _buildStatItem(
+                        'Even/Odd',
+                        state.counter % 2 == 0 ? 'Even' : 'Odd',
+                        Icons.calculate,
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ),
+          ],
         ),
+      ),
     );
   }
 
