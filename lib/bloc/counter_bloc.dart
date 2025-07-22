@@ -8,9 +8,6 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
   CounterBloc() : super((InitialState(0))) {
     on<IncrementEvent>((event, emit) {
       emit(IncrementState(state.counter + 1));
-      if (state.counter == 2) {
-        throw Exception("exception wael");
-      }
     });
     on<DecrementEvent>((event, emit) {
       emit(DecrementState(state.counter - 1));
