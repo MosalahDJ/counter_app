@@ -7,6 +7,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("===================page refreshed=====================");
     return Scaffold(
       backgroundColor: const Color(0xFFF8F9FA),
       appBar: AppBar(
@@ -55,17 +56,13 @@ class HomePage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 16),
-                  BlocBuilder<CounterBloc, CounterState>(
-                    builder: (context, state) {
-                      return Text(
-                        "${state.counter}",
-                        style: const TextStyle(
-                          fontSize: 32,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF2C3E50),
-                        ),
-                      );
-                    },
+                  Text(
+                    "${context.watch<CounterBloc>().state.counter}",
+                    style: const TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                      color: Color(0xFF2C3E50),
+                    ),
                   ),
                   const SizedBox(height: 8),
                   Container(
@@ -76,20 +73,16 @@ class HomePage extends StatelessWidget {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
                     ),
-                    child: BlocBuilder<CounterBloc, CounterState>(
-                      builder: (context, state) {
-                        return Text(
-                          state.counter == 0
-                              ? 'Reset'
-                              : state.counter > 0
-                              ? 'Positive'
-                              : 'Negative',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 14,
-                          ),
-                        );
-                      },
+                    child: Text(
+                      context.watch<CounterBloc>().state.counter == 0
+                          ? 'Reset'
+                          : context.watch<CounterBloc>().state.counter > 0
+                          ? 'Positive'
+                          : 'Negative',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14,
+                      ),
                     ),
                   ),
                 ],
@@ -149,31 +142,29 @@ class HomePage extends StatelessWidget {
                   ),
                 ],
               ),
-              child: BlocBuilder<CounterBloc, CounterState>(
-                builder: (context, state) {
-                  return Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      _buildStatItem(
-                        'Absolute',
-                        '${state.counter.abs()}',
-                        Icons.straighten,
-                      ),
-                      Container(height: 40, width: 1, color: Colors.grey[300]),
-                      _buildStatItem(
-                        'Sign',
-                        state.counter >= 0 ? '+' : '-',
-                        Icons.swap_horiz,
-                      ),
-                      Container(height: 40, width: 1, color: Colors.grey[300]),
-                      _buildStatItem(
-                        'Even/Odd',
-                        state.counter % 2 == 0 ? 'Even' : 'Odd',
-                        Icons.calculate,
-                      ),
-                    ],
-                  );
-                },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  _buildStatItem(
+                    'Absolute',
+                    '${context.watch<CounterBloc>().state.counter.abs()}',
+                    Icons.straighten,
+                  ),
+                  Container(height: 40, width: 1, color: Colors.grey[300]),
+                  _buildStatItem(
+                    'Sign',
+                    context.watch<CounterBloc>().state.counter >= 0 ? '+' : '-',
+                    Icons.swap_horiz,
+                  ),
+                  Container(height: 40, width: 1, color: Colors.grey[300]),
+                  _buildStatItem(
+                    'Even/Odd',
+                    context.watch<CounterBloc>().state.counter % 2 == 0
+                        ? 'Even'
+                        : 'Odd',
+                    Icons.calculate,
+                  ),
+                ],
               ),
             ),
           ],
