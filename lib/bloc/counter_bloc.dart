@@ -18,4 +18,3 @@ class CounterBloc extends Bloc<CounterEvent, CounterState> {
   }
 }
 
-//something
