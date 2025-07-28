@@ -8,7 +8,7 @@ sealed class CounterState extends Equatable {
   List<Object> get props => [counter];
 }
 
-class InitialState extends CounterState{
+class InitialState extends CounterState {
   const InitialState(super.counter);
 }
 
@@ -23,3 +23,5 @@ final class DecrementState extends CounterState {
 final class RsetState extends CounterState {
   const RsetState(super.counter);
 }
+
+// nothing
