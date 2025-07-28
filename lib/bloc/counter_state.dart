@@ -24,4 +24,3 @@ final class RsetState extends CounterState {
   const RsetState(super.counter);
 }
 
-// nothing
