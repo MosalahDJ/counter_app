@@ -1,11 +1,10 @@
-import 'package:counter_app/EX/bloc/counter_bloc.dart';
-import 'package:counter_app/EX/bloc_observer.dart';
+import 'package:counter_app/cubit/counter_cubit.dart';
 import 'package:counter_app/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() {
-  Bloc.observer = MyObserver();
+  // Bloc.observer = MyObserver();
   runApp(CounterApp());
 }
 
@@ -15,7 +14,7 @@ class CounterApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => CounterBloc(),
+      create: (context) => CounterCubit(),
       child: MaterialApp(home: HomePage()),
     );
   }
