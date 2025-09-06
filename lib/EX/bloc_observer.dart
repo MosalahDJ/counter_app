@@ -4,14 +4,14 @@ class MyObserver extends BlocObserver {
   @override
   void onCreate(BlocBase bloc) {
     super.onCreate(bloc);
-    //print(bloc);
+    print(bloc);
   }
 
   @override
   void onEvent(Bloc bloc, Object? event) {
     super.onEvent(bloc, event);
-    //print(bloc);
-    //print(event);
+    print(bloc);
+    print(event);
   }
 
   @override
