@@ -10,8 +10,8 @@ class MyObserver extends BlocObserver {
   @override
   void onEvent(Bloc bloc, Object? event) {
     super.onEvent(bloc, event);
-    // print(bloc);
-    // print(event);
+    print(bloc);
+    print(event);
   }
 
   @override
